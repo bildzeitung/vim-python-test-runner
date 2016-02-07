@@ -9,25 +9,15 @@ CONTENTS
     1. Intro .............................................. |test-runner-intro|
     2. Requirements ................................ |test-runner-requirements|
     3. Usage .............................................. |test-runner-usage|
-    4. Config File .................................. |test-runner-config-file|
-        4.1 Config file contents........................ |config-file-contents|
-            4.1.1 ........................................... |required-fields|
-            4.1.2 ........................................... |optional-fields|
-            4.1.3 ............................ |vim-django-config-file-example|
-            4.1.4 .......... |vim-django-namespace-package-config-file-example|
-        4.2 Outside of Django................. |plugin-usage-outside-of-django|
-    5. Licence .......................................... |test-runner-licence|
-    6. Bugs ................................................ |test-runner-bugs|
+    4. Licence .......................................... |test-runner-licence|
+    5. Bugs ................................................ |test-runner-bugs|
 ===============================================================================
 1. Intro                                                    *test-runner-intro*
 
 A simple way of running tests for your python files from within VIM.
 
-This plugin was created to allow running Django tests with django-nose that
-require database interaction from within Vim. Thus avoiding the need to toggle
-between your vim session and the shell for longer periods of time. It will
-also run your regular python unit tests with nosetests as well when not
-working on a Django project.
+This plugin was created to allow running your regular python unit tests with 
+nosetests.
 
 ===============================================================================
 2. Requirements                                      *test-runner-requirements*
@@ -37,18 +27,14 @@ for most distributions on Linux/Mac.  You can check this by running
 ``vim --version | grep +python``
 if you get a hit you are in business.
 
-Tests are ran with either django-nose or nosetest so these will need to be
-pip installed in order for the plugin to function properly.
+Tests are ran with nosetest so this will need to be pip installed in order for
+the plugin to function properly.
 
 ===============================================================================
 3. Usage                                                    *test-runner-usage*
 
-The plugin provides nine commands:
+The plugin provides five commands:
 
-- `DjangoTestApp`: Run all tests for the current app
-- `DjangoTestFile`: Run all tests in the current file
-- `DjangoTestClass`: Run all tests in the current class
-- `DjangoTestMethod`: Run test for the current method
 - `NosetestFile`: Run all tests for the current file
 - `NosetestClass`: Run all tests in the current class
 - `NosetestMethod`: Run the current test method (inside of a class)
@@ -62,10 +48,6 @@ For ease of usage you can map the above actions to a shortcut. For example,
 if you wanted leader mappings you could set something like the following in
 your vimrc:
 
-    nnoremap<Leader>da :DjangoTestApp<CR>
-    nnoremap<Leader>df :DjangoTestFile<CR>
-    nnoremap<Leader>dc :DjangoTestClass<CR>
-    nnoremap<Leader>dm :DjangoTestMethod<CR>
     nnoremap<Leader>nf :NosetestFile<CR>
     nnoremap<Leader>nc :NosetestClass<CR>
     nnoremap<Leader>nm :NosetestMethod<CR>
@@ -78,94 +60,7 @@ you can jump to failing tests by placing your cursor on the desired test and
 pressing enter.
 
 ===============================================================================
-4. Config File                                        *test-runner-config-file*
-
-To make use of the plugin for Django projects you will need to create a small
-config file named ``.vim-django`` in the root of your project that defines some
-information about the apps you would like to run tests for. Assuming a basic
-folder structure the config file would be saved in the following location.
-```
-── Project Root
-   ├── .vim-django
-   ├── manage.py
-   ├── app1
-   │   └── tests
-   │       └── testsa1.py
-   └── app2
-       └── tests
-           ├── testsb1.py
-           └── testsb2.py
-```
-
---------------------------------------------------------------------------------
-4.1 Config file contents                                  *config-file-contents*
-
-4.1.1                                                          *required-fields*
-
-The only required field is a list of the app names that you will be running
-tests for.
-`"app_name": "app1, app2"`
-
-4.1.2                                                          *optional-fields*
-
-Optional fields that can be set in the vim-django config file are as follows:
-- `environment`: If you have modifyed your manage.py file to accept an 
-               environment argument then you may use the environment flag to 
-               specify which one to run tests for. Example `"environment": "dev"`
-               If you haven't modifyed your manage.py file then you don't need to
-               use this.
-
-- `flags`:       An array of flags that you would like passed to the test runner
-               See example config file below for usage.
-
-4.1.3                                           *vim-django-config-file-example*
-
-Using the example project above we would set the app name to "app1, app2"
-The environment field is optional.  We are also saying that we want the test to use
-the fail fast option.
-
-```
-{"app_name": "app1, app2",
- "environment": "OptionalNameOfEnv",
- "flags": ["failfast"]}
-```
-*NOTE* be sure to use double quotes in the config file as it is parsed as json
-
-4.1.4                           *vim-django-namespace-package-config-file-example*
-
-Namespace packages are supported, but require slightly different placement of
-the `.vim-django` config file. Rather than placing it in the project root place
-it in the lowest level package. For example, given a namespace package called
-`organization.department.team` the `.vim-django` file would be inside of the
-`team` directory.
-```
-── Project Root
-   ├── manage.py
-   └── organization
-       └── department
-           └── team
-               └── .vim-django
-               └── testsa1.py
-               └── tests
-                   ├── testsb1.py
-                   └── testsb2.py
-```
-
-The `.vim-django` file will contain only the top level package name, in this case
-`organization`, for example:
-
-```
-{"app_name": "organization"}
-```
-
---------------------------------------------------------------------------------
-4.2 Outside of Django                           *plugin-usage-outside-of-django*
-
-Nothing other than nose is required to use this plugin for tests that are
-outside of a Django application.
-
-===============================================================================
-5. Licence                                                *test-runner-licence*
+4. Licence                                                *test-runner-licence*
 
 The MIT License (MIT)
 
@@ -190,7 +85,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ===============================================================================
-6. Bugs                                                      *test-runner-bugs*
+5. Bugs                                                      *test-runner-bugs*
 
 If you find a bug please post it on the issue tracker:
 https://github.com/JarrodCTaylor/vim-python-test-runner/issues
