@@ -1,7 +1,3 @@
-command! DjangoTestApp call vim_python_test_runner#RunDesiredTests("django_app")
-command! DjangoTestFile call vim_python_test_runner#RunDesiredTests("django_file")
-command! DjangoTestClass call vim_python_test_runner#RunDesiredTests("django_class")
-command! DjangoTestMethod call vim_python_test_runner#RunDesiredTests("django_method")
 command! NosetestFile call vim_python_test_runner#RunDesiredTests("nose_file")
 command! NosetestClass call vim_python_test_runner#RunDesiredTests("nose_class")
 command! NosetestMethod call vim_python_test_runner#RunDesiredTests("nose_method")
