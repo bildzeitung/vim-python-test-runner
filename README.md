@@ -2,14 +2,8 @@
 
 A simple way of running tests for your python files from within VIM.
 
-This plugin was created to allow running Django tests with django-nose that
-require database interaction from within Vim. Thus avoiding the need to toggle
-between your vim session and the shell for longer periods of time. It will
-also run your regular python unit tests with nosetests as well when not
-working on a Django project.
-
-## Demo
-![django_test_run](https://f.cloud.github.com/assets/4416952/2181329/c3107922-974b-11e3-88a8-c40f27061658.gif)
+This plugin was created to allow running your regular python unit tests with
+nosetests.
 
 ## Installation
 
@@ -34,17 +28,13 @@ for most distributions on Linux/Mac.  You can check this by running
 ``vim --version | grep +python``
 if you get a hit you are in business.
 
-Tests are ran with either django-nose or nosetest so these will need to be
+Tests are ran with nosetest so that will need to be
 pip installed in order for the plugin to function properly.
 
 ## Usage
 
 The plugin provides nine commands:
 
-- `DjangoTestApp`: Run all tests for the current app
-- `DjangoTestFile`: Run all tests in the current file
-- `DjangoTestClass`: Run all tests in the current class
-- `DjangoTestMethod`: Run test for the current method
 - `NosetestFile`: Run all tests for the current file
 - `NosetestClass`: Run all tests in the current class
 - `NosetestMethod`: Run the current test method (inside of a class)
@@ -59,10 +49,6 @@ if you wanted leader mappings you could set something like the following in
 your vimrc:
 
 ```
-    nnoremap <Leader>da :DjangoTestApp<CR>
-    nnoremap <Leader>df :DjangoTestFile<CR>
-    nnoremap <Leader>dc :DjangoTestClass<CR>
-    nnoremap <Leader>dm :DjangoTestMethod<CR>
     nnoremap <Leader>nf :NosetestFile<CR>
     nnoremap <Leader>nc :NosetestClass<CR>
     nnoremap <Leader>nm :NosetestMethod<CR>
@@ -77,93 +63,3 @@ running and you return to your Vim buffer. Open quickfix with `:copen` and
 you can jump to failing tests by placing your cursor on the desired test and
 pressing enter.
 
-### NOTE to OS X users
-
-The django commands need to be ran from vim with sudo on OS X so the first
-time you run one of the Django test commands you will be asked by the shell
-for your password. You should only have to enter it once then you will be able
-to run subsequent commands in that buffer without reentering your password.
-
-### Required Configuration File for Django Tests
-
-To make use of the plugin for Django projects you will need to create a small
-config file named ``.vim-django`` in the root of your project that defines some
-information about the apps you would like to run tests for. Assuming a basic
-folder structure the config file would be saved in the following location.
-```
-── Project Root
-   ├── .vim-django
-   ├── manage.py
-   ├── app1
-   │   └── tests
-   │       └── testsa1.py
-   └── app2
-       └── tests
-           ├── testsb1.py
-           └── testsb2.py
-```
-
-### Config file contents
-
-#### Required fields
-
-The only required field is a list of the app names that you will be running
-tests for.
-`"app_name": "app1, app2"`
-
-#### Optional fields
-
-Optional fields that can be set in the vim-django config file are as follows:
-- `environment`: If you have modified your manage.py file to accept an environment argument
-                 then you may use the environment flag to specify which one to run tests for.
-                 Example `"environment": "dev"` If you haven't modified your manage.py file
-                 then you don't need to use this.
-
-- `flags`:       An array of flags that you would like passed to the test runner
-                 See example config file below for usage.
-
-
-#### vim-django config file example
-
-Using the example project above we would set the app name to "app1, app2"
-The environment field is optional.  We are also saying that we want the test to use
-the fail fast option.
-
-```
-{"app_name": "app1, app2",
- "environment": "OptionalNameOfEnv",
- "flags": ["failfast"]}
-```
-*NOTE* be sure to use double quotes in the config file as it is parsed as json
-
-#### vim-django config file example for namespace packages
-
-Namespace packages are supported, but require slightly different placement of
-the `.vim-django` config file. Rather than placing it in the project root place
-it in the lowest level package. For example, given a namespace package called
-`organization.department.team` the `.vim-django` file would be inside of the
-`team` directory.
-```
-── Project Root
-   ├── manage.py
-   └── organization
-       └── department
-           └── team
-               └── .vim-django
-               └── testsa1.py
-               └── tests
-                   ├── testsb1.py
-                   └── testsb2.py
-```
-
-The `.vim-django` file will contain only the top level package name, in this case
-`organization`, for example:
-
-```
-{"app_name": "organization"}
-```
-
-### Outside of Django
-
-Nothing other than nose is required to use this plugin for tests that are
-outside of a Django application.
