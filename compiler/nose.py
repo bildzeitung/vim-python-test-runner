@@ -75,12 +75,20 @@ def process_error(inname, name, txt):
     finder = Finder(name)
     finder.visit(tree)
 
-    results = ['pyerror:{0}:{1}'.format(inname, finder.lineno)]
-    for line in txt.split('\n'):
-        if line.strip():
-            results.append('~' + line.strip())
+    if finder.lineno:
+        results = ['pyerror:{0}:{1}'.format(inname, finder.lineno)]
+        for line in txt.split('\n'):
+            if line.strip():
+                results.append('~' + line.strip())
 
-    results.append('pyerrorend')
+        results.append('pyerrorend')
+    else:
+        results = ['pyerror:{0}:1'.format(inname)]
+        for line in txt.split('\n'):
+            if line.strip():
+                results.append('~' + line.strip())
+        results.append('pyerrorend')
+
     return '\n'.join(results)
 
 
